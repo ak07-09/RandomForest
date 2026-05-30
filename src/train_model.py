@@ -10,25 +10,19 @@ from sklearn.model_selection import (
 )
 
 from data_preprocessing import (
-    load_data,
-    clean_data,
-    prepare_classifier_data
+    load_and_preprocess_data
 )
-
-df=load_data(
-    "data/laptop_data.csv"
-)
-
-df=clean_data(df)
 
 (
+    df,
     X_train,
     X_test,
     y_train,
     y_test,
     scaler,
-    encoder
-)=prepare_classifier_data(df)
+    encoder,
+    columns
+)=load_and_preprocess_data()
 
 param_grid={
 
@@ -56,6 +50,16 @@ param_grid={
     "max_features":[
         "sqrt",
         "log2"
+    ],
+
+    "bootstrap":[
+        True,
+        False
+    ],
+
+    "criterion":[
+        "gini",
+        "entropy"
     ]
 }
 
@@ -97,12 +101,17 @@ joblib.dump(
 
 joblib.dump(
     scaler,
-    "models/classifier_scaler.pkl"
+    "models/scaler.pkl"
 )
 
 joblib.dump(
     encoder,
-    "models/label_encoder.pkl"
+    "models/encoder.pkl"
+)
+
+joblib.dump(
+    columns,
+    "models/columns.pkl"
 )
 
 print(

@@ -1,22 +1,27 @@
 import pandas as pd
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import (
+    train_test_split
+)
+
 from sklearn.preprocessing import (
     StandardScaler,
     LabelEncoder
 )
 
 
-def load_data(path):
-
-    df=pd.read_csv(path)
-
-    return df
+DATA_PATH="data/laptop_price.csv"
 
 
-def clean_data(df):
+def load_and_preprocess_data():
+
+    df=pd.read_csv(
+        DATA_PATH,
+        encoding="latin1"
+    )
 
     if "Unnamed: 0" in df.columns:
+
         df=df.drop(
             "Unnamed: 0",
             axis=1
@@ -24,10 +29,17 @@ def clean_data(df):
 
     df=df.drop_duplicates()
 
-    return df
+    df["Ram"]=df["Ram"].str.replace(
+        "GB",
+        "",
+        regex=False
+    ).astype(int)
 
-
-def prepare_classifier_data(df):
+    df["Weight"]=df["Weight"].str.replace(
+        "kg",
+        "",
+        regex=False
+    ).astype(float)
 
     X=df.drop(
         "Company",
@@ -54,42 +66,13 @@ def prepare_classifier_data(df):
         stratify=y
     )
 
-    return (
+    return(
+        df,
         X_train,
         X_test,
         y_train,
         y_test,
         scaler,
-        encoder
-    )
-
-
-def prepare_regressor_data(df):
-
-    X=df.drop(
-        "Price",
-        axis=1
-    )
-
-    y=df["Price"]
-
-    X=pd.get_dummies(X)
-
-    scaler=StandardScaler()
-
-    X=scaler.fit_transform(X)
-
-    X_train,X_test,y_train,y_test=train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        random_state=42
-    )
-
-    return (
-        X_train,
-        X_test,
-        y_train,
-        y_test,
-        scaler
+        encoder,
+        X.columns
     )

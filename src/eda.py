@@ -1,15 +1,36 @@
-import pandas as pd
-
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df=pd.read_csv(
-    "data/laptop_data.csv"
+from data_preprocessing import (
+    load_and_preprocess_data
 )
+
+(
+    df,
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+    scaler,
+    encoder,
+    columns
+)=load_and_preprocess_data()
 
 print(df.head())
 
-plt.figure(figsize=(8,4))
+print(df.info())
+
+print(df.describe())
+
+print(
+    "Missing Values:"
+)
+
+print(
+    df.isnull().sum()
+)
+
+plt.figure(figsize=(10,5))
 
 sns.countplot(
     x="Company",
@@ -24,20 +45,7 @@ plt.title(
 
 plt.show()
 
-plt.figure(figsize=(6,4))
-
-sns.histplot(
-    df["Price"],
-    kde=True
-)
-
-plt.title(
-    "Laptop Price Distribution"
-)
-
-plt.show()
-
-plt.figure(figsize=(6,4))
+plt.figure(figsize=(8,5))
 
 sns.scatterplot(
     x="Ram",
@@ -64,6 +72,18 @@ sns.heatmap(
 
 plt.title(
     "Correlation Heatmap"
+)
+
+plt.show()
+
+plt.figure(figsize=(8,5))
+
+sns.boxplot(
+    x=df["Price"]
+)
+
+plt.title(
+    "Price Outlier Detection"
 )
 
 plt.show()
