@@ -49,7 +49,7 @@ plt.figure(figsize=(8,5))
 
 sns.scatterplot(
     x="Ram",
-    y="Price",
+    y="Price_euros",
     hue="Company",
     data=df
 )
@@ -79,7 +79,7 @@ plt.show()
 plt.figure(figsize=(8,5))
 
 sns.boxplot(
-    x=df["Price"]
+    x=df["Price_euros"]
 )
 
 plt.title(

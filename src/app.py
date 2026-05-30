@@ -136,7 +136,7 @@ fig,ax=plt.subplots()
 
 sns.scatterplot(
     x="Ram",
-    y="Price",
+    y="Price_euros",
     hue="Company",
     data=df,
     ax=ax
